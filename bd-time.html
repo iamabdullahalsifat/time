@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <title>Real-time Date Update</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f2f5; }
+        #clock { font-size: 2rem; font-weight: bold; color: #1a73e8; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+
+    <div id="clock">লোড হচ্ছে...</div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+
+            // বছরের বিভিন্ন অংশ আলাদা করা
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+
+            // টাইমজোন অফসেট বের করা (যেমন: +06:00)
+            const offsetMinutes = -now.getTimezoneOffset();
+            const offsetSign = offsetMinutes >= 0 ? '+' : '-';
+            const offsetHours = String(Math.floor(Math.abs(offsetMinutes) / 60)).padStart(2, '0');
+            const offsetMins = String(Math.abs(offsetMinutes) % 60).padStart(2, '0');
+            const timezone = `${offsetSign}${offsetHours}:${offsetMins}`;
+
+            // আপনার ফরম্যাট অনুযায়ী সাজানো: YYYY-MM-DDTHH:mm:ss+HH:mm
+            const formattedTime = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}${timezone}`;
+
+            // HTML এ আউটপুট দেখানো
+            document.getElementById('clock').textContent = formattedTime;
+        }
+
+        // প্রতি ১ সেকেন্ড (১০০০ মিলিসেকেন্ড) পর পর ফাংশনটি চলবে
+        setInterval(updateTime, 1000);
+
+        // পেজ লোড হওয়ার সাথে সাথেই একবার রান করবে
+        updateTime();
+    </script>
+</body>
+</html>
